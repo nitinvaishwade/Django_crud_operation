@@ -1,0 +1,329 @@
+html, body {
+    height: 100%;
+}
+
+#wrapper{
+  height:100%;
+}
+
+#page-wrapper {
+  min-height: 100%;
+}
+.row {
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-bottom: 15px;
+}
+
+.main-content-wrapper {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.account-search input {
+  width:40%;
+  display: inline-block;
+  float: right;
+  margin-top: 5px;
+}
+
+.account-search .heading-text {
+  font-size: 28px;
+}
+
+.top5 { margin-top:5px; }
+.top7 { margin-top:7px; }
+.top10 { margin-top:10px; }
+.top15 { margin-top:15px; }
+.top17 { margin-top:17px; }
+.top30 { margin-top:30px; }
+
+/*
+*  This CSS is for the search list on the account page
+*/
+
+.account-list{
+  padding: 0px;
+  margin: 0px;
+}
+
+.account-list li {
+  display: inline-block;
+  background-color: #71B6F5;
+  color : white;
+  width : 50%;
+  margin : 5px 10px;
+  padding : 20px 10px;
+  float : left;
+  border-radius: 5px;
+  font-family: arial;
+  font-size: medium;
+}
+
+.attributes li{
+  display: inline-block;
+  /*background-color: #71B6F5;*/
+  color : black;
+  width : 46%;
+  margin : 5px 10px;
+  padding : 20px 10px;
+  float : left;
+  border-radius: 5px;
+  font-family: arial;
+  font-size: medium;
+}
+
+textarea.form-control {
+  min-height: 120px;
+}
+
+button.list-group-item:focus {
+    outline: 0;
+}
+
+.debug-search.page-header.row label {
+    margin-left: 5px;
+}
+
+/*.attributes li .fieldname{
+  display: inline-block;
+  /*width: 33%;*/
+  /*color: #333;
+  word-break : inherit;
+}
+.attributes li .fieldvalue{
+  margin-left:10px;
+  display: inline-block;
+  color : #555;
+  word-break : inherit;
+}*/
+
+.col-sm-8 {
+  width: 70%;
+}
+
+.form-horizontal{
+  display: inline-block;
+}
+
+.list-group{
+  width: 30%;
+}
+
+.list-group-item{
+  text-align: center;
+  width:70%;
+  text-decoration: underline;
+}
+
+#errorMessage{
+  display:none;
+  font-size:small;
+  font-color=red;
+}
+
+#modalLoader{
+  display:none;
+  position: relative;
+  top: -20px;
+  left: 150px;
+
+}
+
+#modalLoader img{
+  margin: 10px 422px -20px 0px;
+  width: 30px;
+  height: 30px;
+}
+
+.modal-body .form-horizontal{
+  padding-left: 50px;
+}
+
+.error {
+  font-weight: 800;
+  color: red;
+  font-size: larger;
+  align-content: center;
+}
+
+
+.breadcrumb button{
+  border : none;
+  background: none;
+  font-weight: 700;
+  text-decoration: underline;
+}
+.account_debug button{
+  border : none;
+  background: none;
+  font-weight: 500;
+  text-decoration: underline;
+}
+.account_debug .active{
+  border : none;
+  background: none;
+  text-decoration: none;
+  font-weight: normal;
+}
+
+.debug-search input{
+  margin-left: 20px;
+}
+
+.debug-search .form-control{
+  width: 50%;
+}
+
+#logTable{
+  width: 70%;
+}
+
+#mainContentWrapper{
+  overflow-y: auto;
+  min-height: 560px;
+}
+
+.logs-detail #back{
+  border: none;
+  background: none;
+  color: blue;
+  text-decoration: underline;
+}
+
+#loader{
+  margin-top: 50px;
+  display:none;
+  width:40px;
+  height:40px;
+}
+
+#log-detail {
+  padding: 50px;
+}
+
+#searchSMSGroup > input{
+  margin-top: 25px;
+  width: 70%;
+}
+
+#searchSMSGroup > button {
+  float:right;
+  width: 20%;
+  margin-top:25px;
+  margin-right:50px;
+}
+
+#carrierProfileGroups, #countryList, #subaccountSearchID, #applicationSearchID {
+  width:100%;
+}
+
+#mainContentWrapper > div > table {
+  margin-top:50px;
+}
+
+#chart ul {
+  list-style-type:none;
+}
+
+#chart ul li div {
+  text-align:center;
+}
+
+#chart ul li {
+  float:left;
+  border-style:solid;
+  border-width:1px;
+  border-color:#97bbcd;
+  margin-right:10px;
+  margin-bottom:5px;
+  padding:5px;
+}
+
+/* Account page modals */
+
+.cps-modal .form-control, .mps-modal .form-control, .account-email-modal .form-control {
+    width: 53%;
+}
+
+
+#mainContentWrapper .account_debug li:not(.active) a {
+  cursor: pointer;
+}
+
+.gateway-priority-table tbody tr td {
+  border-top: none !important;
+}
+
+.gateway-priority-table {
+  margin-bottom: 0px;
+}
+
+#smsGroupDetails .glyphicon{
+  font-size: 12px;
+  cursor: pointer;
+}
+
+table.table.gateway-priority-table td {
+    padding-top: 0px;
+}
+
+.navbar-nav  li  ul  li.active  a {
+  background-color: black;
+  color: white !important;
+}
+
+.sms-routing-choices .selectize-control {
+  width:100%;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+
+.no-input-look input{
+    border: none;
+    color: #000;
+    background-color: #FFF;
+}
+
+.no-input-look textarea{
+    border: none;
+    color: #000;
+    background-color: #FFF;
+}
+
+.full_100_percent_width{
+  width:100%!important;
+}
+
+#dstnetwork{
+  width:100%;
+}
+#sms_routing_search_btn, #voice_pricing_search_btn{
+margin-left:15px;
+}
+
+input[type="radio"], input[type="checkbox"]{
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+#numberSearchDiv .form-control.selectize-control {
+  position: absolute;
+  top: 2px;
+  right: 17px;
+  height: 30px;
+  min-width: 110px;
+}
+
+#numberSearchDiv .form-control.selectize-control .selectize-input{
+  padding-top: 4px;
+  min-height: 30px;
+  height: 30px;
+}
+
+#applicationSearchDiv .selectize-control {
+    width: 100%;
+}

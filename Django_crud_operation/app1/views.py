@@ -1,5 +1,6 @@
 from django.http import HttpResponse
+from django.shortcuts import render
 
 
-def index(request):
-	return HttpResponse("<h1>this is app1</h1>")
+def index(request, template="index.html"):
+	return render(request, template,)

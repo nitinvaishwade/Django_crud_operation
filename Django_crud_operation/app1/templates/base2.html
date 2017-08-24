@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %} {{ block.super }} Payments| {% endblock %}
+{% block tab_selected %} class="active" {% endblock %}
+{% block content %}
+<div class="row col-md-12">
+	<ul class="nav nav-tabs">
+	  <li role="presentation" {% block tab_selected2 %}{% endblock %}><a href="/app1/">tab1</a></li>
+	  
+	</ul>
+</div>
+{% block payments_content %} {% endblock %}
+{% endblock %}
