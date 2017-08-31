@@ -1,0 +1,257 @@
+{% extends "base2.html" %}
+{% block title %} index2 {% endblock %}
+{% block tab_selected2 %} class="active" {% endblock %}
+{% block payments_content %}
+{{ block.super }}
+<form class="form-inline col-md-12 " id="filterGroupForm" role="form" method="GET" action="/app1/">
+  <div class="row">
+    <div class="form-group col-sm-3">
+    <label for="account_username" class="full_100_percent_width">Username</label>
+    <select   class="form-control" style="width:100%;" name="account_username_search" id="account_username_search">
+    <option  value="" selected="selected"></option>
+      {% for id, username in all_adjustment_accounts.items %}
+        <option  value="{{ id }}"
+          {% if id == st_account %}
+              selected="selected"
+          {% endif %}>
+          {{ username }}
+        </option>
+    {% endfor %}
+    </select>
+    </div>
+ <!--  <div class="form-group col-sm-3">
+  <label for="payment time" for="payment_date" class="full_100_percent_width"  >Start Date</label>
+  <input style="width:100%;"  placeholder="Start Date" type="date" class="form-control"  id="adjustment_start_date"  name="adjustment_start_date"  data-date='{"startView":2, "openOnMouseFocus": true}'/>
+  </div> -->
+  
+<button type="button" class="btn btn-default pull-right" id="" data-toggle="modal" data-target="#add_modal" style="margin-top: 23px;">Add records</button>
+  </div>
+  
+        <div class="row">
+                <div class="form-group col-md-4 col-md-offset-7">
+                    <input type="reset" class="btn" value="Reset">
+                    <button type="submit" style="margin-left:7px;" id="search_submit" class="btn btn-success">Search</button><br><br>
+                </div>
+            </div>
+            <div class="row col-md-2">
+            <div role="alert" id="search-form-error"></div></div>
+            </form>
+    {% if warning_message %}
+    <div class="col-md-8">
+    <div class="alert alert-warning">{{ warning_message|safe }}</div>
+    </div>
+    {% endif %}
+    {% if people_records %}
+    <div class=' col-md-11'>
+    <div class="btn-group bulk-options">
+        <button class="btn btn-default" id="selectAllRecords">Select all {{ people_records.paginator.count }} records</button>
+        <button class="btn btn-default" id="unselectAllRecords" style="display: none;">Unselect all {{ people_records.paginator.count }} records</button>
+        <button  class="btn btn-default" id="exportall" onclick="exportcsvforall()" disabled>Export as CSV</button>
+    </div><br/><br/>
+
+        <table class="table table-condensed table-striped">
+        <thead>
+        <tr style="text-align: left;">
+            <th style="border: none !important;">
+            <input type="checkbox" id="selectall" value="Uncheck">
+            </th>
+            <td><b>Username</b></td>
+            <td><b>Date</b></td>
+            <td><b>City</b></td>
+            <td><b>State</b></td>
+            <td style="text-align:center;"><b>Country</b></td>
+        </tr>
+        </thead>
+        <tbody>
+        {% for people_data in people_records%}
+            <tr id="current_row_{{ people_data.id }}" style="text-align: left;" class="">
+            <td >
+        <input class="checkbox_check" type="checkbox" name="editcheck" id="{{ people_data.id }}">
+            </td>
+            <td class="account_row_data">{{ people_data.username }}</td>
+            <td  class="date_row_data">{{ people_data.start_date }}</td>
+            <td  class="date_row_data">{{ people_data.city }}</td>
+            <td  class="date_row_data">{{ people_data.state }}</td>
+            <td  class="date_row_data">{{ people_data.country }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination col-md-12">
+        <ul class="pager">
+            {% if people_records.has_previous %}
+                <li class="previous">
+                <a href="?page={{ people_records.previous_page_number }}&{{ query_string }}">Previous</a>
+                </li>
+            {% endif %}
+        <span class="current">
+            Page {{ people_records.number }} of {{ people_records.paginator.num_pages }}
+        </span>
+        {% if people_records.has_next %}
+            <li class="next">
+            <a href="?page={{ people_records.next_page_number }}&{{ query_string }}">Next</a>
+            </li>
+        {% endif %}
+        </ul>
+    </div>
+    {% endif %}
+    </div>
+<div class="hidden">
+      <form id="download_records" method="post" action="">
+        {% csrf_token %}
+        <input type="hidden" name="export_all" id="export_all" value="false" />
+        {% if st_account %}
+        <input type="hidden" name="user_selected" id="user_selected" value="{{ st_account }}" />{% endif %}
+        {% if start_adjustment_amount %}
+        <input type="hidden" name="selected_start_adjustment_amount" value="{{ start_adjustment_amount }}" />{% endif %}
+        {% if end_adjustment_amount %}
+        <input type="hidden" name="selected_end_adjustment_amount" value="{{ end_adjustment_amount }}" />{% endif %}
+        {% if adjustment_start_date %}
+        <input type="hidden" name="export_start_date" value="{{ adjustment_start_date }}" />{% endif %}
+        {% if adjustment_end_date %}
+        <input type="hidden" name="export_end_date" value="{{ adjustment_end_date }}" />{% endif %}
+        <input type="hidden" name="selected_cleared" id="selected_cleared" value="{{ selected_cleared }}" />
+        <input type="hidden" name="export_id" id="export_id" />
+          <input type="hidden" name="export_csv_for_selected" id="export_csv_per_selected" value="" />
+        <input type="text" name="search_query_string" id="search_query_string" value="{{ query_string }}"/>
+      </form>
+    </div>
+  <!-- """Modal for add adjustment """-->
+<div class="modal fade" id="add_modal" role="dialog" aria-labelledby="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+	    <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal">&times;</button>
+	        <h4 class="modal-title">Add People Records</h4>
+	    </div>
+        <form action="/app1/add_new_record/" class="ws-validate" enctype="multipart/form-data" method="post" role="form form-inline">
+        <div class="modal-body">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="userSearch">Username</label>
+          <input type="text" placeHolder="Username/Email/Name/Authid" id="username" class="form-control" name="username" required data-errormessage-value-missing="username is required"/>
+        </div>
+        <div class="form-group">
+          <label for="userSearch">Full Name</label>
+          <input type="text" placeHolder="full name" id="fullname" class="form-control" name="fullname" required data-errormessage-value-missing="full name is required"/>
+        </div>
+        <div class="form-group">
+          <label for="add_new_amount"> Age</label>
+          <input type="number" class="form-control"  step="1" id="age" placeholder="age" name="age" required data-errormessage-value-missing="Age cannot be empty" required/>
+        </div>
+         <div class="form-group">
+          <label for="add_new_date">Start Date</label>
+          <input placeholder=" date" type="date" class="form-control" id="add_new_date"  name="add_new_date"  data-date='{"startView": 2, "openOnMouseFocus": true}'>
+        </div>
+        <div class="form-group">
+          <label for="userSearch">City</label>
+          <input type="text" placeHolder="city" id="city" class="form-control" name="city" required data-errormessage-value-missing="city name is required"/>
+        </div>
+        <div class="form-group">
+          <label for="userSearch">State</label>
+          <input type="text" placeHolder="state" id="state" class="form-control" name="state" required data-errormessage-value-missing="state name is required"/>
+        </div>
+        <div class="form-group">
+          <label for="userSearch">Country</label>
+          <input type="text" placeHolder="country" id="country" class="form-control" name="country" required data-errormessage-value-missing="country name is required"/>
+        </div>
+     </div>
+     <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <input type="submit" class="btn btn-success btn-ok" value="Add Records">
+      </div>
+   </form>
+  </div>
+ </div>
+</div>
+
+  {% endblock %}
+ {% block extra_css %}
+  {{ block.super }}
+{% endblock %}
+  {% block extra_js %}
+    
+    <script type="text/javascript">
+      $("#account_username_search").selectize({allowEmptyOption:false});
+        $('#userSearch').yourlabsAutocomplete({
+          url: '/dashboard/accounts/search/',
+          choiceSelector: 'a',
+      }).input.bind('selectChoice', function(e, choice, autocomplete) {
+        $("#userSearch").val(choice.html());
+      });
+    $("#adjustment_date").attr("max",new Date().toDateInputValue());
+    $("#adjustment_date").val('');
+    $(".checkbox_check").click(function () {
+           var checkedIds = returnCheckedIds();
+            if(checkedIds.length == 0){
+                $('#exportall').attr('disabled', 'disabled');
+            }else{
+                $('#exportall').removeAttr('disabled');
+            }
+      });
+    function returnCheckedIds(){
+        var checkedIds = $(".checkbox_check:checkbox:checked").map(function() {
+            return this.id;
+          }).get();
+        return checkedIds;
+      }
+    // $("#search_submit").on("click", function(e) {
+    //     e.preventDefault();
+    //     if($("#account_username_search").val() == "" && $("#adjustment_amount").val() == "" && $("#adjustment_date").val() == "" && $("#cleared_flag").val() == "") {
+    //       return false;
+    //     } else {
+    //       $("#filterGroupForm").submit();
+    //     }
+    //   });
+   $("#add_new_date").attr("max",new Date().toDateInputValue());
+   $("#add_new_date").val(new Date().toDateInputValue());
+     $("#exportall").click(function(){
+        var checkedIds = returnCheckedIds();
+        var total_ids_selected = $.makeArray(checkedIds).join(",");
+        $("#export_id").val(total_ids_selected);
+        $("#export_csv_per_selected").val("");
+        $("#export_csv_per_selected").val("export_all");
+        $("#download_records").submit();
+    });
+  $("#selectall").click(function(){
+          $(this).val( ($(this).val() == 'Check' ? 'Uncheck' : 'Check'));
+          $(".checkbox_check").prop('checked', $(this).prop("checked"));
+          $("#delete_all_records").val("false");
+          $('#export_all').val("false");
+          $('#unselectAllRecords').css("display","none");
+          $('#selectAllRecords').css("display","block");
+           var checkedIds = returnCheckedIds();
+             if(checkedIds.length == 0){
+                $("#exportall").attr('disabled', 'disabled');
+            }else{
+                $('#exportall').removeAttr('disabled');
+            }
+          });
+  $("#selectAllRecords").click(function () {
+          $('#unselectAllRecords').css("display","block");
+          $('#selectAllRecords').css("display","none");
+          $('.checkbox_check').prop('checked', true);
+          $('#selectall').removeAttr('checked');
+        $('#export_all').val("true");
+           var checkedIds = returnCheckedIds();
+            if(checkedIds.length == 0){
+                $("#exportall").attr('disabled', 'disabled');
+            }else{
+               $('#exportall').removeAttr('disabled');
+            }
+      });
+$("#unselectAllRecords").click(function () {
+          $('.checkbox_check').removeAttr('checked');
+          $('#unselectAllRecords').css("display","none");
+          $('#selectAllRecords').css("display","block");
+          $('#selectall').removeAttr('checked');
+        $('#export_all').val("false");
+           var checkedIds = returnCheckedIds();
+            if(checkedIds.length == 0){
+                $("#exportall").attr('disabled', 'disabled');
+            }else{
+                $('#exportall').removeAttr('disabled');
+                 }
+    });
+</script>
+{% endblock %}
